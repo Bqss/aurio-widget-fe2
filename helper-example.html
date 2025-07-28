@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aurio Widget - Helper Script Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .example-section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .widget-container {
+      border: 2px dashed #ddd;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      min-height: 400px;
+    }
+
+    .code-block {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 4px;
+      padding: 15px;
+      margin: 10px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      overflow-x: auto;
+    }
+
+    .btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Aurio Widget Integration Examples</h1>
+    <p>This page demonstrates different ways to integrate the Aurio consultation widget using the helper script.</p>
+
+    <!-- Auto-initialization Example -->
+    <div class="example-section">
+      <h2>Method 1: Auto-initialization</h2>
+      <p>The widget automatically initializes when a container with id="aurio-widget" is found.</p>
+
+      <div class="code-block">
+        &lt;!-- Widget will auto-initialize in this container --&gt;
+        &lt;div id="aurio-widget"&gt;&lt;/div&gt;
+
+        &lt;!-- Include the helper script --&gt;
+        &lt;script src="./aurio-widget.js"&gt;&lt;/script&gt;
+      </div>
+
+      <div id="aurio-widget" class="widget-container">
+        <!-- Widget will be loaded here automatically -->
+      </div>
+    </div>
+
+    <!-- Manual initialization Example -->
+    <div class="example-section">
+      <h2>Method 2: Manual initialization</h2>
+      <p>You can manually control when and where the widget initializes.</p>
+
+      <div class="code-block">
+        &lt;div id="custom-widget-container"&gt;&lt;/div&gt;
+
+        &lt;script src="./aurio-widget.js"&gt;&lt;/script&gt;
+        &lt;script&gt;
+        // Manual initialization with custom options
+        const widget = new AurioWidget({
+        containerId: 'custom-widget-container',
+        autoInit: false
+        });
+
+        // Initialize when ready
+        widget.init();
+        &lt;/script&gt;
+      </div>
+
+      <div id="custom-widget-container" class="widget-container">
+        <!-- Widget will be loaded here when button is clicked -->
+      </div>
+
+      <button class="btn" onclick="initCustomWidget()">Initialize Widget</button>
+      <button class="btn" onclick="destroyCustomWidget()">Destroy Widget</button>
+    </div>
+
+    <!-- Configuration Example -->
+    <div class="example-section">
+      <h2>Method 3: Custom configuration</h2>
+      <p>You can customize the widget paths and behavior.</p>
+
+      <div class="code-block">
+        &lt;script&gt;
+        const customWidget = new AurioWidget({
+        containerId: 'configured-widget',
+        cssPath: './dist/widget.css', // Non-hashed CSS filename
+        jsPath: './dist/widget.js', // Non-hashed JS filename
+        autoInit: true
+        });
+        &lt;/script&gt;
+      </div>
+    </div>
+
+    <!-- Benefits Section -->
+    <div class="example-section">
+      <h2>Benefits of Using aurio-widget.js Helper</h2>
+      <ul>
+        <li><strong>Plug-and-play:</strong> Just include the script and add a container</li>
+        <li><strong>Error handling:</strong> Built-in error handling for failed loads</li>
+        <li><strong>Customizable:</strong> Configure paths, container IDs, and initialization behavior</li>
+        <li><strong>API methods:</strong> Programmatic control with init() and destroy() methods</li>
+        <li><strong>Auto-styling:</strong> Automatically loads required CSS</li>
+        <li><strong>No dependencies:</strong> Works without any external libraries</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Include the helper script -->
+  <script src="./aurio-widget.js"></script>
+
+  <!-- Manual initialization scripts -->
+  <script>
+    let customWidget = null;
+
+    function initCustomWidget() {
+      if (customWidget) {
+        customWidget.destroy();
+      }
+
+      customWidget = new AurioWidget({
+        containerId: 'custom-widget-container',
+        autoInit: false
+      });
+
+      customWidget.init().then(() => {
+        console.log('Custom widget initialized');
+      }).catch(error => {
+        console.error('Failed to initialize custom widget:', error);
+      });
+    }
+
+    function destroyCustomWidget() {
+      if (customWidget) {
+        customWidget.destroy();
+        console.log('Custom widget destroyed');
+      }
+    }
+
+    // Log when auto-widget is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.aurioWidget) {
+        console.log('Auto-initialized widget is ready');
+      }
+    });
+  </script>
+</body>
+
+</html>
